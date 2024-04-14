@@ -1,35 +1,15 @@
-import React from "react";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  getFirestore,
-} from "firebase/firestore/lite";
-import { firebaseApp } from "../../../src/commons/libraries/firebase";
+import React, { useEffect } from "react";
+import { firestore } from "../commons/libraries/firebase.js";
+import { COLLECTION, DOC } from "../config";
 
-export default function FirebasePage() {
-  // 생성
-  const onClickSubmit = () => {
-    const board = collection(getFirestore(firebaseApp), "board");
-    void addDoc(board, {
-      writer: "철수",
-      title: "안녕하세요",
-      contents: "반갑습니다",
-    });
-  };
+export default function Check() {
+  useEffect(() => {
+    firestore.collection(COLLECTION).doc(DOC)
+      .get()
+      .then((data) => {
+        console.log(data.data());
+      });
+  }, []);
 
-  // 조회
-  const onClickFetch = async () => {
-    const board = collection(getFirestore(firebaseApp), "board");
-    const result = await getDocs(board);
-    const datas = result.docs.map((el) => el.data());
-    console.log(datas);
-  };
-
-  return (
-    <>
-      <button onClick={onClickSubmit}>등록하기</button>
-      <button onClick={onClickFetch}>조회하기</button>
-    </>
-  );
+  return <></>;
 }

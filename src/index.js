@@ -21,6 +21,12 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+console.log(root); // 확인용 로그
+
+if (!root) {
+  throw new Error("Root element not found. Make sure you have a <div id='root'></div> in your HTML file.");
+}
+
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
