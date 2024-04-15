@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Check from './pages/Check';
+import Videos from './pages/Videos';
+import VideoDetail from './pages/VideoDetail';
 import NotFound from './pages/NotFound';
 import reportWebVitals from './reportWebVitals';
 
@@ -12,21 +13,15 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <Check /> },
-      { path: 'check', element: <Check /> },
-      // { path: 'videos/:keyword', element: <Videos /> },
-      // { path: 'videos/watch/:videoId', element: <VideoDetail /> },
+      { index: true, element: <Videos /> },
+      { path: 'videos', element: <Videos /> },
+      { path: 'videos/:keyword', element: <Videos /> },
+      { path: 'videos/watch/:videoId', element: <VideoDetail /> },
     ]
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-console.log(root); // 확인용 로그
-
-if (!root) {
-  throw new Error("Root element not found. Make sure you have a <div id='root'></div> in your HTML file.");
-}
-
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />
