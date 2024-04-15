@@ -8,9 +8,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import YouTubeIcon from '@mui/icons-material/YouTube';
+import { Grid } from "@mui/material";
 
 import { useAuthContext } from "../context/AuthContext";
-import { Grid } from "@mui/material";
 
 export default function SearchHeader() {
   const dropdownItemStyle = {
@@ -49,6 +49,7 @@ export default function SearchHeader() {
   return (
     <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: 1, justifyContent: "space-between", margin: '0 20px' }}>
       <Grid container>
+        
         <Grid item xs={3}>
           <Link to='/' style={{ textDecoration: 'none' }}>
             <Typography variant="h5" color='error' sx={{ fontWeight: 'bold', cursor: 'pointer', fontSize: 50 }} onClick={handleNavigateToHome}>
@@ -59,11 +60,12 @@ export default function SearchHeader() {
             </Typography>
           </Link>
         </Grid>
-        <Grid item xs={6}>
-          <Paper
+        
+        <Grid item xs={5}>
+          {/* <Paper
             component="form"
             onSubmit={handleSubmit}
-            sx={{ marginLeft: '650px', p: '10px 0px 10px 10px', display: 'flex', alignItems: 'center', position: 'relative', width: 400 }}
+            sx={{ marginLeft: '70px', p: '10px 0px 10px 10px', display: 'flex', alignItems: 'center', position: 'relative', width: 400 }}
           >
             <IconButton sx={{ p: '10px' }} aria-label="menu" onClick={() => setShowDropdown(!showDropdown)}>
               <MenuIcon />
@@ -90,12 +92,16 @@ export default function SearchHeader() {
             <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
               <SearchIcon />
             </IconButton>
-          </Paper>
-        </Grid><Grid item xs={3}>
+          </Paper> */}
+        </Grid>
+
+        <Grid item xs={4}>
           <Stack direction='row' spacing={1} justifyContent='right' alignItems='center'>
             {user && <Link to='/videos/record'>시청기록</Link>}
-            {user && user.photoURL && <p><img src={user.photoURL} alt={user.displayName} height='32' style={{ borderRadius: 100 }} /></p>}
-            {user && user.displayName && <p>displayName={user.displayName}</p>}
+            {user && user.photoURL && (
+              <img src={user.photoURL} alt={user.displayName} height='32' style={{ borderRadius: 100 }} />
+            )}
+            {user && <p>{user.displayName}</p>}
             {user && <button onClick={logout}>로그아웃</button>}
             {!user && <Link to='/signUp'>로그인</Link>}
           </Stack>

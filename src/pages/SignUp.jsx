@@ -1,42 +1,50 @@
 import React, { useState } from "react";
-import { register, loginWithGithub, logout, login } from '../api/firebase';
-import { uploadImage } from "../api/cloudinary";
-import { useNavigate } from "react-router-dom";
+import { register, loginWithGithub } from '../api/firebase';
+import { useNavigate, Link } from "react-router-dom";
+import cloudinary from 'cloudinary';
 
+cloudinary.config({
+  cloud_name: process.env.REACT_APP_CLOUDINARY_URL_CLOUD_NAME,
+  api_key: process.env.REACT_APP_CLOUDINARY_API_KEY,
+  api_secret: process.env.REACT_APP_CLOUDINARY_SECRET_CODE
+});
 
+// 이미지 업로드 함수
+export const uploadImage = async (file) => {
+  try {
+    // Cloudinary에 이미지 업로드
+    const result = await cloudinary.uploader.upload(file, {
+      upload_preset: process.env.REACT_APP_CLOUDINARY_PRESET // Cloudinary 대시보드에서 설정한 업로드 프리셋 이름
+    });
+
+    // 업로드된 이미지의 URL 반환
+    return result.secure_url;
+  } catch (error) {
+    console.error('Error uploading image to Cloudinary:', error);
+    throw error; // 에러를 호출자에게 다시 던집니다.
+  }
+};
 
 export default function SignUp() {
-  const [userInfo, setUserInfo] = useState({ email: '', password: '', name: '', photo: '' });
+  const [userInfo, setUserInfo] = useState({email:'', password:'', name:'', photo:''});
   const [file, setFile] = useState();
-  const [user, setUser] = useState();
   const navigate = useNavigate();
-
   const handleChange = e => {
-    setUserInfo({ ...userInfo, [e.target.name]: e.target.value });
+    setUserInfo({...userInfo, [e.target.name]: e.target.value});
   }
   const handleSubmit = e => {
     e.preventDefault();
     register(userInfo);
     navigate('/signIn');
   }
-
   const handleGithub = e => {
     loginWithGithub();
-    navigate(-1); // 이전 state로 이동
+    navigate(-1);
   }
-
-  const handleLogin = () => {
-    login(userInfo)
-  }
-
-  const handleLogout = () => {
-    logout()
-  }
-
   const handleUpload = e => {
     setFile(e.target.files && e.target.files[0]);
     uploadImage(file)
-      .then(url => setUserInfo({ ...userInfo, ['photo']: url }));
+      .then(url => setUserInfo({...userInfo, ['photo']: url}));
   }
 
   return (
@@ -48,21 +56,13 @@ export default function SignUp() {
           onChange={handleChange} /><br />
         <input type="text" name='name' value={userInfo.name} placeholder="이름"
           onChange={handleChange} /><br />
-        <input type="file" accept="image/*" name='file' onChange={handleUpload} /><br />
+        <input type="file" accept="/image/*" name='file' onChange={handleUpload} /><br />
         <button onClick={handleSubmit}>사용자 등록</button>
-        <button onClick={handleLogin}>로그인</button>
-        <button onClick={handleLogout}>로그아웃</button>
-      </form><br /><br />
+      </form><br />
+      <span>계정이 있으신가요?</span>
+      <Link to='/signIn'>로그인</Link><br /><br />
       <button onClick={handleGithub}>깃허브 로그인</button>
-      <br /><br />
-      {user && <p>accessToken={user.accessToken}</p>}
-      {user && <p>email={user.email}</p>}
-      {user && <p>uid={user.uid}</p>}
-      {user && user.displayName && <p>displayName={user.displayName}</p>}
-      {user && user.photoURL && (
-        <img src={user.photoURL} alt={user.displayName} width={200} />
-      )}
+
     </div>
   )
-
 }

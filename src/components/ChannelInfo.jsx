@@ -1,5 +1,6 @@
 import React from "react";
 import Stack from '@mui/material/Stack';
+
 import { useChannelInfo } from '../api/youtube';
 
 export default function ChannelInfo({ id, name }) {

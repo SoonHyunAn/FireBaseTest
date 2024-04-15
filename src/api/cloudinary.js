@@ -10,5 +10,5 @@ export async function uploadImage(file) {
     .then(data => {
       console.log(data);
       return data.url;
-    })
+    });
 }
