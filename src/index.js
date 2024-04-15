@@ -4,9 +4,11 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import Videos from './pages/Videos';
 import VideoDetail from './pages/VideoDetail';
+import ViewRecord from './pages/ViewRecord';
 import NotFound from './pages/NotFound';
 import reportWebVitals from './reportWebVitals';
-import SingUp from './pages/SingUp';
+import SignUp from './pages/SignUp';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -18,12 +20,14 @@ const router = createBrowserRouter([
       { path: 'videos', element: <Videos /> },
       { path: 'videos/:keyword', element: <Videos /> },
       { path: 'videos/watch/:videoId', element: <VideoDetail /> },
-      { path: 'signup', element: <SingUp /> },
+      { path: 'signUp', element: <SignUp /> },
+      { path: 'videos/record', 
+        element: <ProtectedRoute><ViewRecord /></ProtectedRoute> },// 로그인 한 사람만
     ]
   }
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router} />

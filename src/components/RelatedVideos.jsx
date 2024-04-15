@@ -10,9 +10,7 @@ import { useRelatedVideo } from "../api/youtube";
 
 
 export default function RelatedVideos({ id, name }) {
-  const uri = `https://youtube.googleapis.com/youtube/v3/search?key=${process.env.REACT_APP_YOUTUBE_API_KEY}&maxResults=25&part=snippet&channelId=${id}`;
-
-
+  // const uri = `https://youtube.googleapis.com/youtube/v3/search?key=${process.env.REACT_APP_YOUTUBE_API_KEY}&maxResults=25&part=snippet&channelId=${id}`;
   const {isLoading, error, videos} = useRelatedVideo(id);
 
 
